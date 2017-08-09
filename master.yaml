@@ -1,0 +1,18 @@
+Description: >
+	The following master stack file is used to make an infrastructure for an specific project that needs
+	a segmented VPC in three or two layer (Public, private, data).
+	Author:  Daniel Alberto Burbano
+
+Resources:
+	VPC:
+		Type: "AWS::CloudFormation::Stack"
+		Properties:
+			TemplateURL: https://s3.amazonaws.com/Infraestructura/vpc.yaml
+		Parameters:
+			EnvironmentName: !Ref AWS::stackName
+			VpcCIDR: 10.4.0.0/16
+			PublicSubNetA: 10.4.0.0/24
+			PublicSubnetB: 10.4.1.0/24
+			PrivateSubnetA: 10.4.2.0/24
+			PrivateSubnetB: 10.4.3.0/24
+ 
