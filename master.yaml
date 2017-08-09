@@ -3,13 +3,12 @@ Description: A master stack file to create an infrastructure by stacks.
 Resources:
     VPC:
         Type: "AWS::CloudFormation::Stack"
-        Properties: 
+        Properties:
             TemplateURL: https://s3.amazonaws.com/Infraestructura/InfraAsCode/vpc.yaml
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
                 VpcCIDR: 10.4.0.0/16
                 PublicSubNetA: 10.4.0.0/24
-                PublicSubnetB: 10.4.1.0/24
-                PrivateSubnetA: 10.4.2.0/24
-                PrivateSubnetB: 10.4.3.0/24
- 
+                PublicSubNetB: 10.4.1.0/24
+                PrivateSubNetA: 10.4.2.0/24
+                PrivateSubNetB: 10.4.3.0/24

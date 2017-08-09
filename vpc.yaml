@@ -2,19 +2,35 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Creates a segmented VPC wit 4 subnets (2 publics, 2 privates).
 Parameters: 
     EnvironmentName: 
-    Description: "A prefix for the resource names."
+        Description: "A prefix for the resource names."
         Type: String
+        Default: MyVPC
     VpcCIDR:
         Description: IP range of the VPC in CIDR notation.
         Type: String
         Default: 10.0.0.0/16
-    PublicSubNetA: 10.0.1.0/24
-    PublicSubNetB: 10.0.2.0/24
-    PrivateSubNetA: 10.0.3.0/24
-    PrivateSubnetB: 10.0.4.0/24
+    PublicSubNetA:
+        Description: IP range for the public SubNet A.
+        Type: String
+        Default: 10.0.0.0/24
+    PublicSubNetB:
+        Description: IP range for the public SubNet B.
+        Type: String
+        Default: 10.0.2.0/24
+    PrivateSubNetA:
+        Description: IP range for the private SubNet A.
+        Type: String
+        Default: 10.0.3.0/24
+    PrivateSubNetB:
+        Description: IP range for the private SubNet B.
+        Type: String
+        Default: 10.0.4.0/24
     
 Resources:
-    CidrBlock: !Ref VpcCIDR
-    Tags:
-        - Key: Name
-          Value: !Ref EnvironmentName	
+    VPC:
+        Type: AWS::EC2::VPC
+        Properties:
+            CidrBlock: !Ref VpcCIDR
+            Tags:
+                - Key: Name
+                  Value: !Ref EnvironmentName	
