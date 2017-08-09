@@ -1,20 +1,20 @@
-Description: >
-		This template create a segmented VPC wit 4 subnets; two publics in different
-		region and two privates on different Region too.
-Parameters
-	EnvironmentName:
-		Description: A prefix for the resource names.
-		Type: String
-	VpcCIDR:
-		Description: IP range of the VPC in CIDR notation.
-		Type: String
-		Default: 10.0.0.0/16
-	PublicSubNetA: 10.0.1.0/24
-	PublicSubNetB: 10.0.2.0/24
-	PrivateSubNetA: 10.0.3.0/24
-	PrivateSubnetB: 10.0.4.0/24
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates a segmented VPC wit 4 subnets (2 publics, 2 privates).
+Parameters: 
+    EnvironmentName: 
+    Description: "A prefix for the resource names."
+        Type: String
+    VpcCIDR:
+        Description: IP range of the VPC in CIDR notation.
+        Type: String
+        Default: 10.0.0.0/16
+    PublicSubNetA: 10.0.1.0/24
+    PublicSubNetB: 10.0.2.0/24
+    PrivateSubNetA: 10.0.3.0/24
+    PrivateSubnetB: 10.0.4.0/24
+    
 Resources:
-	CidrBlock: !Ref VpcCIDR
-	Tags:
-		- Key: Name
-		  Value: !Ref EnvironmentName	
+    CidrBlock: !Ref VpcCIDR
+    Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName	
