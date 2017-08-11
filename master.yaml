@@ -8,7 +8,7 @@ Resources:
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
                 VpcCIDR: 10.4.0.0/16
-                PublicSubNetA: 10.4.0.0/24
-                PublicSubNetB: 10.4.1.0/24
-                PrivateSubNetA: 10.4.2.0/24
-                PrivateSubNetB: 10.4.3.0/24
+                PublicSubNetACIDR: 10.4.0.0/24
+                PublicSubNetBCIDR: 10.4.1.0/24
+                PrivateSubNetACIDR: 10.4.2.0/24
+                PrivateSubNetBCIDR: 10.4.3.0/24

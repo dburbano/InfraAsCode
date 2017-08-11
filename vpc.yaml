@@ -9,19 +9,19 @@ Parameters:
         Description: IP range of the VPC in CIDR notation.
         Type: String
         Default: 10.0.0.0/16
-    PublicSubNetA:
+    PublicSubNetACIDR:
         Description: IP range for the public SubNet A.
         Type: String
         Default: 10.0.0.0/24
-    PublicSubNetB:
+    PublicSubNetBCIDR:
         Description: IP range for the public SubNet B.
         Type: String
         Default: 10.0.2.0/24
-    PrivateSubNetA:
+    PrivateSubNetACIDR:
         Description: IP range for the private SubNet A.
         Type: String
         Default: 10.0.3.0/24
-    PrivateSubNetB:
+    PrivateSubNetBCIDR:
         Description: IP range for the private SubNet B.
         Type: String
         Default: 10.0.4.0/24
@@ -33,4 +33,15 @@ Resources:
             CidrBlock: !Ref VpcCIDR
             Tags:
                 - Key: Name
-                  Value: !Ref EnvironmentName	
+                  Value: !Ref EnvironmentName
+    
+    PublicSubNetA:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: !Ref PublicSubNetACIDR
+            VpcId: !Ref VPC
+            Tags:
+                - key: Name
+                  Value: !Join ["-", ["PublicSubNetA", !Ref EnvironmentName]]
+            
+        
