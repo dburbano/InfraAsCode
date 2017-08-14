@@ -8,23 +8,23 @@ Parameters:
     VpcCIDR:
         Description: IP range of the VPC in CIDR notation.
         Type: String
-        Default: 10.0.0.0/16
+        Default: 192.168.0.0/16
     PublicSubNetACIDR:
         Description: IP range for the public SubNet A.
         Type: String
-        Default: 10.0.0.0/24
+        Default: 192.168.0.0/24
     PublicSubNetBCIDR:
         Description: IP range for the public SubNet B.
         Type: String
-        Default: 10.0.2.0/24
+        Default: 192.168.1.0/24
     PrivateSubNetACIDR:
         Description: IP range for the private SubNet A.
         Type: String
-        Default: 10.0.3.0/24
+        Default: 192.168.2.0/24
     PrivateSubNetBCIDR:
         Description: IP range for the private SubNet B.
         Type: String
-        Default: 10.0.4.0/24
+        Default: 192.168.3.0/24
     
 Resources:
     VPC:
@@ -34,14 +34,94 @@ Resources:
             Tags:
                 - Key: Name
                   Value: !Ref EnvironmentName
-    
+    InternetGateway:
+        Type: AWS::EC2::InternetGateway
+        Properties:
+            Tags:
+                - Key: Name
+                  Value: !Join ['-', ['InternetGateway', !Ref EnvironmentName]]
+    AttachGateway:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+            VpcId: !Ref VPC
+            InternetGatewayId: !Ref InternetGateway
+    SubNetRouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref VPC
+            Tags:
+                - Key: Name
+                  Value: !Join [ '-', [ 'SubNetRouteTable', !Ref EnvironmentName]]
     PublicSubNetA:
         Type: AWS::EC2::Subnet
         Properties:
             CidrBlock: !Ref PublicSubNetACIDR
             VpcId: !Ref VPC
+            AvailabilityZone: !Select [ 0, !GetAZs ]
             Tags:
-                - key: Name
-                  Value: !Join ["-", ["PublicSubNetA", !Ref EnvironmentName]]
-            
-        
+                - Key: Name
+                  Value: !Join ['-', ['PublicSubNetA', !Ref EnvironmentName]]
+    PublicSubNetB:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: !Ref PublicSubNetBCIDR
+            VpcId: !Ref VPC
+            AvailabilityZone: !Select [ 1, !GetAZs ]
+            Tags:
+                - Key: Name
+                  Value: !Join ['-', ['PublicSubNetB', !Ref EnvironmentName]]
+    PrivateSubNetA:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: !Ref PrivateSubNetACIDR
+            VpcId: !Ref VPC
+            AvailabilityZone: !Select [ 0, !GetAZs ]
+            Tags:
+                - Key: Name
+                  Value: !Join ['-', ['PrivateSubNetA', !Ref EnvironmentName]]                  
+    PrivateSubNetB:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: !Ref PrivateSubNetBCIDR
+            VpcId: !Ref VPC
+            AvailabilityZone: !Select [ 1, !GetAZs ]
+            Tags:
+                - Key: Name
+                  Value: !Join ['-', ['PrivateSubNetB', !Ref EnvironmentName]]
+
+Outputs:
+    VpcId:
+        Description: "VPC ID"
+        Value: !Ref VPC
+        Export: 
+            Name: !Join ['-', ['VpcId', !Ref EnvironmentName]]
+    InternetGatewayId:
+        Description: "ID of the gateway that allows to go to Internet."
+        Value: !Ref InternetGateway
+        Export: 
+            Name: !Join ['-', ['InternetGatewayId',!Ref EnvironmentName]]
+    SubNetRouteTableId:
+        Description: "Route Table ID for the subnets in the VPC."
+        Value: !Ref SubNetRouteTable
+        Export: 
+            Name: !Join ['-', ['SubNetRouteTableId', !Ref EnvironmentName]]
+    PublicSubNetAId:
+        Description: "ID of the public subnet A"
+        Value: !Ref PublicSubNetA
+        Export: 
+            Name: !Join ['-', ['PublicSubNetAId', !Ref EnvironmentName]]
+    PublicSubNetBId:
+        Description: "ID of the public Subnet B"
+        Value: !Ref PublicSubNetB
+        Export: 
+            Name: !Join ['-', ['PublicSubNetBId', !Ref EnvironmentName]]
+    PrivateSubNetAId:
+        Description: "ID of the private subnet A"
+        Value: !Ref PrivateSubNetA
+        Export: 
+            Name: !Join ['-', ['PrivateSubNetAId', !Ref EnvironmentName]]
+    PrivateSubNetBId:
+        Description: "ID of the private subnet B"
+        Value: !Ref PrivateSubNetB
+        Export: 
+            Name: !Join ['-', ['PrivateSubNetBId', !Ref EnvironmentName]]
