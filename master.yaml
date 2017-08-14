@@ -12,3 +12,9 @@ Resources:
                 PublicSubNetBCIDR: 10.4.1.0/24
                 PrivateSubNetACIDR: 10.4.2.0/24
                 PrivateSubNetBCIDR: 10.4.3.0/24
+    RouteTable:
+        Type: "AWS::CloudFormation::Stack"
+        Properties:
+            TemplateURL: https://s3.amazonaws.com/Infraestructura/InfraAsCode/routetable.yaml
+            Parameters:
+                EnvironmentName: !Ref AWS::StackName
