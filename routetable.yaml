@@ -12,7 +12,7 @@ Resources:
         Properties:
             RouteTableId: 
                 Fn::ImportValue: 
-                    !Sub "SubNetRouteTableId-${EnvironmentName}"
+                    !Sub "PublicSubNetRouteTableId-${EnvironmentName}"
             DestinationCidrBlock: 0.0.0.0/0
             GatewayId:
                 Fn::ImportValue:
@@ -22,18 +22,35 @@ Resources:
         Properties: 
             RouteTableId:
                 Fn::ImportValue:
-                    !Sub "SubNetRouteTableId-${EnvironmentName}"
+                    !Sub "PublicSubNetRouteTableId-${EnvironmentName}"
             SubnetId:
                 Fn::ImportValue:
                     !Sub "PublicSubNetAId-${EnvironmentName}"                    
-    PublicSubNetBAssociatedToInterntRoute:
+    PublicSubNetBAssociatedToInternetRoute:
         Type: AWS::EC2::SubnetRouteTableAssociation
         Properties: 
             RouteTableId:
                 Fn::ImportValue:
-                    !Sub "SubNetRouteTableId-${EnvironmentName}"
+                    !Sub "PublicSubNetRouteTableId-${EnvironmentName}"
             SubnetId:
                 Fn::ImportValue:
-                    Sub "PublicSubNetBId-${EnvironmentName}"
-            
-            
+                    !Sub "PublicSubNetBId-${EnvironmentName}"
+    PrivateSubNetToInternetRoute:
+        Type: AWS::EC2::Route
+        Properties:
+            RouteTableId:
+                Fn::ImportValue:
+                    !Sub "PrivateSubNetRouteTableId-${EnvironmentName}"
+            DestinationCidrBlock: 0.0.0.0/0
+            NatGatewayId:
+                Fn::ImportValue:
+                    !Sub "NatId-${EnvironmentName}"
+    PrivateSubNetAAssociatedToInterntRoute:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId:
+                Fn::ImportValue:
+                    !Sub "PrivateSubNetRouteTableId-${EnvironmentName}"
+            SubnetId:
+                Fn::ImportValue:
+                    !Sub "PrivateSubNetAId-${EnvironmentName}"
